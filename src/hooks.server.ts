@@ -8,14 +8,15 @@ export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.sb = supabaseClient;
 	event.locals.session = session;
 
-	const { dashboard } = routes;
+	const pathname = event.url.pathname;
 
 	if (
 		(
-			event.url.pathname.startsWith(dashboard.dashboard) ||
-			event.url.pathname.startsWith(dashboard.profile) ||
-			event.url.pathname.startsWith(dashboard.products)
-		) && !event.locals.session
+			!pathname.startsWith(routes.auth.forgotPassword) ||
+			!pathname.startsWith(routes.auth.login) ||
+			!pathname.startsWith(routes.auth.register) ||
+			!pathname.startsWith(routes.auth.logout)
+		) && !event.locals.session && !pathname.startsWith(pathname)
 	) {
 		throw redirect(303, '/login');
 	}

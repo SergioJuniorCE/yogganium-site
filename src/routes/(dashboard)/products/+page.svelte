@@ -4,14 +4,14 @@
 	import { h } from 'gridjs';
 	import { goto } from '$app/navigation';
 	import { getDataFromRow } from '$lib/table-utils';
+	import type { OneDArray, TColumn } from 'gridjs/dist/src/types';
 
 	export let data: PageData;
-
-	const products = data.products;
-	const columns = [
+	const columns: OneDArray<TColumn> = [
 		{
-			name: 'id',
-			hidden: true
+			id: 'id',
+			name: 'ID',
+			width: '6rem'
 		},
 		{
 			name: 'Title'
@@ -24,15 +24,16 @@
 			name: 'Price'
 		},
 		{
+			id: 'Actions',
 			name: 'Actions',
-			formatter: (cell: any, row: any, column: any) => {
+			width: '10%',
+			sort: { enabled: false },
+			formatter(_cell: any, row: any, _column: any) {
 				return h(
 					'a',
-					{
-						className: 'btn btn-primary btn-sm',
-						href: `/products/${getDataFromRow(row, 0)}`
-					},
-					h('i', { className: 'fa-solid fa-pencil' }, null)
+					{ href: `/products/${row.cells[0].data}`, class: 'btn btn-primary' },
+
+					h('i', { class: 'fa-solid fa-pen-to-square' })
 				);
 			}
 		}
@@ -61,11 +62,11 @@
 <div class="container-xl px-4 mt-n10">
 	<div class="card">
 		<div class="card-header">Productos</div>
-		<div class="card-body datatable">
+		<div class="card-body">
 			Administra tus productos desde esta pagina
 			<br />
 			<Grid
-				data={products}
+				data={data.products}
 				{columns}
 				search
 				sort
@@ -74,12 +75,8 @@
 					limit: limit,
 					summary: true
 				}}
+				autoWidth
 			/>
-			<!-- on:rowClick={(row) => {
-					row.detail['1']._cells.forEach((cell) => {
-						console.log(cell.data);
-					});
-				}} -->
 		</div>
 	</div>
 </div>

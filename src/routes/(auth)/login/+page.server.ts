@@ -1,11 +1,11 @@
-// import type { PageServerLoad } from './$types';
+import type { PageServerLoad } from './$types';
 
 import { AuthApiError } from "@supabase/supabase-js";
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 
-// export const load = (async () => {
-//     return {};
-// }) satisfies PageServerLoad;
+export const load = (async () => {
+    return {};
+}) satisfies PageServerLoad;
 
 export const actions: Actions = {
     login: async ({ request, locals }) => {
@@ -26,6 +26,7 @@ export const actions: Actions = {
                 error: 'Something went wrong logging you in.'
             });
         }
+        console.log('Logged in successfully');
         throw redirect(303, '/');
     }
 };
